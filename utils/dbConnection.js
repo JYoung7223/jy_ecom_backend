@@ -1,4 +1,4 @@
-const DotEnv = require("dotenv").config();
+require("dotenv").config(); // gives access to process.env (ie. the .env file configurations)
 const Sequelize = require("sequelize");
 
 const sequelize = process.env.JAWS_DB_URL ? 

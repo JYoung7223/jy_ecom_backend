@@ -1,5 +1,5 @@
 const {Model, DataTypes } = require("sequelize");
-const SequelizeDB = require("../utils/dbConnection.js");
+const sequelize = require("../utils/dbConnection.js");
 
 class Category extends Model {
 
@@ -21,7 +21,7 @@ Category.init(
     },
     {
         // Configurations
-        SequelizeDB,
+        sequelize,
         // Table specific configurations
         modelName: "category"
     }

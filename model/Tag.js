@@ -1,5 +1,5 @@
 const {Model, DataTypes} = require("sequelize");
-const SequelizeDB = require("../utils/dbConnection.js");
+const sequelize = require("../utils/dbConnection.js");
 
 class Tag extends Model{
 
@@ -11,7 +11,7 @@ Tag.init(
         id:{
             type: DataTypes.INTEGER,
             allowNulls:false,
-            primarykey: true,
+            primaryKey: true,
             autoIncrement:true
         },
         tagName: {
@@ -20,7 +20,7 @@ Tag.init(
     },
     {
         // Table specific configurations
-        SequelizeDB,
+        sequelize,
         modelName:"tag"
     }
 );

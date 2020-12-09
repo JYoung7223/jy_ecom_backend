@@ -1,5 +1,5 @@
 const {Model, DataTypes} = require("sequelize");
-const SequelizeDB = require("../utils/dbConnection.js");
+const sequelize = require("../utils/dbConnection.js");
 
 class ProductTag extends Model {
 
@@ -31,7 +31,7 @@ ProductTag.init(
     },
     {
         // Table specific configurations
-        SequelizeDB,
+        sequelize,
         modelName:"product_tag"
     }
 );
