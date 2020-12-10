@@ -6,14 +6,42 @@ const { Product, Category, Tag, ProductTag } = require("../../model");
 // What endpoints will we handle
 // GET /  (return all)
 // be sure to include its associated Category and Tag data
-router.get("/", (req, res) => {
-
+router.get("/", async (req, res) => {
+    try {
+        let productData = await Product.findAll({ include: [{ model: Category }, { model: Tag }] });
+        console.log(productData);
+        if (!productData) {
+            res.status(400).json({ message: "No Products Found" });
+        } else {
+            res.status(200).json(productData);
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
 });
 
 // GET /:id  (return only id given)
 // be sure to include its associated Category and Tag data
-router.get("/:id", (req, res) =>{
-
+router.get("/:id", async (req, res) => {
+    try {
+        let productData = await Product.findAll(
+            {
+                where: { id: req.params.id }
+            },
+            {
+                include: [{ model: Category }, { model: Tag }]
+            });
+        console.log(productData);
+        if (!productData) {
+            res.status(400).json({ message: `Product with id:${req.params.id} Not Found` });
+        } else {
+            res.status(200).json(productData);
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
 });
 
 // POST  (create)
@@ -99,7 +127,7 @@ router.delete("/:id", (req, res) => {
         .then((product) => {
             res.status(200).json(product);
         })
-        .catch((err)=>{
+        .catch((err) => {
             console.log(err);
             res.status(500).json(err);
         });
