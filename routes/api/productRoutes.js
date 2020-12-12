@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Product, Category, Tag, ProductTag } = require("../../model");
+const { Product, Category, Tag, ProductTag } = require("../../models");
 
 // API endpoint = /api/product
 
@@ -27,10 +27,8 @@ router.get("/:id", async (req, res) => {
     try {
         let productData = await Product.findAll(
             {
+                include: [{ model: Category }, { model: Tag }],
                 where: { id: req.params.id }
-            },
-            {
-                include: [{ model: Category }, { model: Tag }]
             });
         console.log(productData);
         if (!productData) {
@@ -50,6 +48,7 @@ router.get("/:id", async (req, res) => {
       product_name: "Basketball",
       price: 200.00,
       stock: 3,
+      category_id: 1,
       tagIds: [1, 2, 3, 4]
     }
   */
@@ -77,8 +76,18 @@ router.post("/", (req, res) => {
 });
 
 // PUT /:id (update data for id given)
+/* req.body should look like this...
+    {
+      product_name: "Basketball",
+      price: 200.00,
+      stock: 3,
+      category_id: 1,
+      tagIds: [1, 2, 3, 4]
+    }
+  */
 router.put("/:id", (req, res) => {
     // update product data
+    console.log(req.body);
     Product.update(req.body, {
         where: {
             id: req.params.id,

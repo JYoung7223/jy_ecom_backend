@@ -1,5 +1,5 @@
 const {Model, DataTypes} = require("sequelize");
-const sequelize = require("../utils/dbConnection.js");
+const sequelize = require("../config/connection.js");
 
 class Product extends Model {
 
@@ -14,7 +14,7 @@ Product.init(
             primaryKey: true,
             autoIncrement: true
         },
-        productName:{
+        product_name:{
             type: DataTypes.STRING,
             allowNulls: false
         },
@@ -34,7 +34,7 @@ Product.init(
                 isInt: true
             }
         },
-        categoryId:{
+        category_id:{
             type: DataTypes.INTEGER,
             // Says this column refers to something else. (ie. foreign key)
             references:{

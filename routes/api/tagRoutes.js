@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Tag, Product, ProductTag } = require("../../model");
+const { Tag, Product, ProductTag } = require("../../models");
 
 // API endpoint = /api/tag
 
@@ -25,12 +25,11 @@ router.get("/", async (req, res) => {
 // be sure to include its associated Product data
 router.get("/:id", async (req, res) => {
     try {
-        let tagData = await Category.findAll(
+        let tagData = await Tag.findAll(
             {
+                include: [{ model: Product }],
                 where: { id: req.params.id }
-            },
-            {
-                include: [{ model: Product }]
+                
             });
         console.log(tagData);
         if (!tagData) {
@@ -45,7 +44,13 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST  (create)
+/* req.body should look like this...
+    {
+      tag_name: "pop culture"
+    }
+  */
 router.post("/", (req, res) => {
+    console.log(req.body);
     Tag.create(req.body)
         .then((tag) => {
             res.status(200).json(tag);
@@ -57,7 +62,13 @@ router.post("/", (req, res) => {
 });
 
 // PUT /:id (update data for id given)
+/* req.body should look like this...
+    {
+      tag_name: "pop culture"
+    }
+  */
 router.put("/:id", (req, res) => {
+    console.log(req.body);
     Tag.update(req.body,
         {
             where: { id: req.params.id }

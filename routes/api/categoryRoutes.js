@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Category, Product } = require("../../model");
+const { Category, Product } = require("../../models");
 
 // API endpoint = /api/category
 // What endpoints will we handle
@@ -8,7 +8,7 @@ const { Category, Product } = require("../../model");
 router.get("/", async (req, res) => {
     try {
         let categoryData = await Category.findAll({ include: [{ model: Product }] })
-        console.log(categoryData);
+        console.log(`CategoryData: ${categoryData}`);
         if (!categoryData) {
             res.status(400).json({ message: "No Categories Found" });
         } else {
@@ -26,12 +26,10 @@ router.get("/:id", async (req, res) => {
     try {
         let categoryData = await Category.findAll(
             {
-                where: { id: req.params.id }
-            },
-            {
+                where: { id: req.params.id },            
                 include: [{ model: Product }]
             });
-        console.log(categoryData);
+        console.log(`CategoryData: ${categoryData}`);
         if (!categoryData) {
             res.status(400).json({ message: `Category with id:${req.params.id} Not Found` });
         } else {
@@ -44,7 +42,13 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST  (create)
+/* req.body should look like this...
+    {
+      category_name: "Sports"
+    }
+  */
 router.post("/", (req, res) => {
+    console.log(req.body);
     Category.create(req.body)
         .then((category) => {
             res.status(200).json(category);
@@ -56,7 +60,13 @@ router.post("/", (req, res) => {
 });
 
 // PUT /:id (update data for id given)
+/* req.body should look like this...
+    {
+      category_name: "Sports"
+    }
+  */
 router.put("/:id", (req, res) => {
+    console.log(req.body);
     Category.update(req.body,
         {
             where: { id: req.params.id }
